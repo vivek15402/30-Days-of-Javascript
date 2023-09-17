@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<style>
+    li {
+        list-style: none;
+    }
+    .summary {
+        /* float: left; */
+        padding-left: 18px;
+        /* margin: 0 30px; */
+    }
+
+    .row {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 3px;
+    }
+
+    .col {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: left;
+        padding: 10px;
+        border: 1px solid #ccc;
+    }
+    .col:last-child{
+        justify-content: right;
+    }
+    .icons {
+        float: left;
+    }
+    .icons a{
+        color: black;
+        font-size: 25px;
+    }
+    .author-main{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .info{
+        display: flex;
+    }
+
+    .titles, .skills {
+        margin-right: 40px;
+    }
+    .keywords-span{
+        border-radius: 8px;
+        margin: 5px;
+    }
+</style>
+
+<body>
+    <!-- https://github.com/Asabeneh/30-Days-Of-JavaScript/blob/master/22_Day_Manipulating_DOM_object/22_day_manipulating_DOM_object.md#exercises-level-3 -->
+    <script src="../challenges_info.js"></script>
+    <script>
+        // console.log(countries_data)
+        document.body.style.fontFamily = 'system-ui'
+
+        let currentDate = new Date();
+        let currentYear = currentDate.getFullYear();
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function updateClock() {
+            const currentDate = new Date();
+            currentYear = currentDate.getFullYear();
+            const options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true // Use 12-hour time format with AM/PM
+            };
+
+            const formattedDate = currentDate.toLocaleString('en-US', options);
+
+            document.getElementById('clock').textContent = formattedDate;
+            document.getElementById('clock').style.background = getRandomColor()
+            document.getElementById('current_year').style.color = getRandomColor()
+        }
+
+        let h1 = document.createElement('h1')
+        h1.innerHTML = 'Vivek Saini challenges in '
+        h1.style.textAlign = 'center'
+        h1.style.marginBottom = '0'
+        document.body.appendChild(h1)
+
+        let date_span = document.createElement('span')
+        date_span.innerText = currentYear
+        date_span.id = 'current_year'
+        date_span.style.cssText = `font-size: 70px`;
+        h1.appendChild(date_span)
+
+        let h4 = document.createElement('h4')
+        h4.id = 'clock'
+        h4.style.cssText = 'text-align: center; width:280px; margin: auto;'
+        document.body.appendChild(h4)
+
+        setInterval(updateClock, 1000);
+
+        let div = document.createElement('div')
+        div.className = 'main-container'
+        div.style.cssText = 'width: 700px; margin: auto; display: flex; flex-wrap: wrap;margin-top: 10px';
+        document.body.appendChild(div)
+
+        // console.log(asabenehChallenges2020.challenges)
+
+        asabenehChallenges2020.challenges.forEach((element, index) => {
+            let row = document.createElement('div')
+            row.className = 'row'
+
+            let summary_lis = ''
+
+            element.topics.forEach(topic => {
+                let li = document.createElement('li')
+                li.innerText = topic
+                li.className = 'summary'
+                summary_lis += li.outerHTML;
+            });
+            // console.log()
+            row.innerHTML = `
+                <div class="col"><a href="${element.githubUrl}">${element.name}</a></div>
+                <div class="col">
+                    <details>
+                        <summary>${element.name.split('Of ')[1]}</summary>
+                        ${summary_lis}
+                    </details>
+                </div>
+                <div class="col">${element.status}</div>
+            `;
+
+            if (element.status == 'Done') {
+                row.style.background = '#21bf73'
+            } else if (element.status == 'Ongoing') {
+                row.style.background = '#fddb3a'
+            } else {
+                row.style.background = '#fd5e53'
+            }
+
+            div.appendChild(row)
+        });
+        // Get all anchor elements within the .col elements
+        const anchorElements = document.querySelectorAll('.col a');
+
+        // Loop through each anchor element
+        anchorElements.forEach((anchor) => {
+            // Check if the href attribute is empty or just contains spaces
+            if (anchor.getAttribute('href').trim() === '') {
+                // If empty, remove the anchor element
+                anchor.style.cssText = 'pointer-events: none;text-decoration: none;color: black;'
+            }
+        });
+
+        let author_div = document.createElement('div');
+        author_div.classList = 'author-main'
+
+        let author = document.createElement('h1')
+        author.innerHTML = asabenehChallenges2020.author.firstName + ' ' + asabenehChallenges2020.author.lastName
+        author.style.textAlign = 'center'
+        author.style.marginBottom = '0'
+        author_div.appendChild(author)
+        // asabenehChallenges2020.author.socialLinks
+        let icons_div = document.createElement('div')
+        let icons = '';
+        asabenehChallenges2020.author.socialLinks.forEach(element => {
+            let li = document.createElement('li')
+            li.classList = 'icons'
+            li.innerHTML = `<a href=${element.url}>${element.fontawesomeIcon}</a>`;
+            icons_div.appendChild(li)    
+        });
+        author_div.appendChild(icons_div)
+        
+        author_p = document.createElement('p')
+        author_p.innerText = asabenehChallenges2020.author.bio
+        author_div.appendChild(author_p)
+        
+        let info_div = document.createElement('div')
+        info_div.className = 'info'
+
+        let titles_div = document.createElement('div')
+        titles_div.className = 'titles'
+
+        let titles_span = document.createElement('span')
+        titles_span.innerText = 'Titles'
+        titles_span.style.fontWeight = 'bold'
+        titles_div.appendChild(titles_span)
+
+        asabenehChallenges2020.author.titles.forEach(element => {
+            let li = document.createElement('li')
+            li.innerHTML = `<span style="display: inline-block; width: 25px">${element[0]}</span><span>${element[1]}</span>`; 
+            li.style.textAlign = 'left'
+            titles_div.appendChild(li)
+        })
+        info_div.appendChild(titles_div)
+
+        let skills_div = document.createElement('div')
+        skills_div.className = 'skills'
+
+        let skills_span = document.createElement('span')
+        skills_span.innerText = 'Skills'
+        skills_span.style.fontWeight = 'bold'
+        skills_div.appendChild(skills_span)
+
+        asabenehChallenges2020.author.skills.forEach(element => {
+            let li = document.createElement('li')
+            li.innerHTML = `<span style="display: inline-block; width: 25px">✅</span><span>${element}</span>`; 
+            li.style.textAlign = 'left'
+            skills_div.appendChild(li)
+        })
+        info_div.appendChild(skills_div)
+
+        let qualifications_div = document.createElement('div')
+        qualifications_div.className = 'qualifications'
+
+        let qualifications_span = document.createElement('span')
+        qualifications_span.innerText = 'Qualifications'
+        qualifications_span.style.fontWeight = 'bold'
+        qualifications_div.appendChild(qualifications_span)
+
+        asabenehChallenges2020.author.qualifications.forEach((element, index) => {
+            let li = document.createElement('li')
+            if(index == 0 ) {
+                icon = '📖'
+            } else {
+                icon = '👨‍🎓'
+            }
+            li.innerHTML = `<span style="display: inline-block; width: 25px">${icon}</span><span>${element}</span>`; 
+            li.style.textAlign = 'left'
+            qualifications_div.appendChild(li)
+        })
+        info_div.appendChild(qualifications_div)
+
+        author_div.appendChild(info_div)
+
+        let keywords_div = document.createElement('div')
+        keywords_div.className = 'keywords'
+
+        let keywords_span = document.createElement('span')
+        keywords_span.innerHTML = 'Keywords<br>'
+        keywords_span.style.fontWeight = 'bold'
+        keywords_div.appendChild(keywords_span)
+
+        asabenehChallenges2020.keywords.forEach(element => {
+            let span = document.createElement('span')
+            span.className = 'keywords-span'
+            span.innerHTML = `<span>#${element}</span>`; 
+            color = getRandomColor()
+            span.style.cssText = `text-align:left; background:${color}`
+            keywords_div.appendChild(span)
+        })
+
+        author_div.appendChild(keywords_div)
+
+        div.appendChild(author_div)
+        
+
+    </script>
+</body>
+
+</html>

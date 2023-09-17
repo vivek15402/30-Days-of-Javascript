@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- https://github.com/Asabeneh/30-Days-Of-JavaScript/blob/master/22_Day_Manipulating_DOM_object/22_day_manipulating_DOM_object.md#exercises-level-2 -->
+    <script src="../countries_data.js"></script>
+    <script>
+        // console.log(countries_data)
+        document.body.style.fontFamily = 'system-ui'
+
+        let h1 = document.createElement('h1')
+        h1.textContent = 'WORLD COUNTRIES LIST'
+        h1.style.textAlign = 'center'
+        h1.style.marginBottom = '0'
+        document.body.appendChild(h1)
+
+        let h4 = document.createElement('h4')
+        h4.textContent = `Total Number of Countries: ${countries_data.length}`
+        h4.style.textAlign = 'center'
+        h4.style.marginTop = '0'
+        document.body.appendChild(h4)
+
+        let div = document.createElement('div')
+        div.className = 'main-container'
+        div.style.cssText = 'width: 700px; margin: auto; display: flex; flex-wrap: wrap;';
+        document.body.appendChild(div)
+
+        let main_div = document.getElementsByClassName('main-container')[0]
+
+        countries_data.forEach((element, index) => {
+            let span = document.createElement('span')
+            span.id = index + 1
+            span.textContent = element.name
+
+            span.style.cssText = 'display: flex; justify-content: center; align-items: center; width: 100px; height: 100px; margin: 3px 3px; color: black; font-size: 12px; font-weight: bold; box-shadow: 0px 0px 1px 1px #e8e8e8; text-align: center';
+
+            main_div.appendChild(span)
+        });
+
+        
+    </script>
+</body>
+</html>
