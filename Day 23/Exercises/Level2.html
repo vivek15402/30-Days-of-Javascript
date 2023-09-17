@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        font-family: monospace;
+    }
+    .main-container {
+        display: flex;
+        width: 700px;
+        margin: auto;
+        flex-direction: column;
+    }
+    .text-div {
+        width: auto;
+        height: 50px;
+        margin: auto;
+        margin-top: 200px;
+        box-shadow: 1px 4px 13px 0px #dedede;
+        font-size: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .number-div {
+        width: auto;
+        height: 100px;
+        margin: auto;
+        margin-top: 30px;
+        box-shadow: 1px 4px 13px 0px #dedede;
+        font-size: 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #548a65;
+    }
+    #key-text{
+        color: #548a65;
+    }
+</style>
+<body>
+    
+    <script>
+
+        let main_div = document.createElement('div')
+        main_div.className = 'main-container'
+
+        document.body.appendChild(main_div)
+
+        let text_div = document.createElement('div')
+        text_div.className = 'text-div'
+        text_div.innerText = 'Press any Keyboard Key'
+        
+        main_div.appendChild(text_div)
+
+        let number_div = document.createElement('div')
+        number_div.className = 'number-div'
+
+        main_div.appendChild(number_div)
+
+        document.body.addEventListener('keydown', e => {            
+            text_div.innerHTML = `You Pressed&nbsp;<span id="key-text">${e.key}</span>`
+            number_div.innerText = e.keyCode
+        })
+
+    </script>
+</body>
+</html>
