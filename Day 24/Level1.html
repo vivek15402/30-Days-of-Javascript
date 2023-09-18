@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        font-family: 'system-ui';
+    }
+
+    body {
+        background: url('https://raw.githubusercontent.com/Asabeneh/30-Days-Of-JavaScript/master/24_Day_Project_solar_system/24_day_starter/images/galaxy.gif');
+    }
+
+    .main-container {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .heading {
+        color: white;
+    }
+
+    .info {
+        display: flex;
+        height: 35px;
+    }
+
+    #input-text,
+    #select-options,
+    #Calc {
+        margin-right: 10px;
+    }
+
+    #Calc {
+        background-color: #6c6c6c;
+        color: white;
+        border: 0;
+        border-radius: 4px;
+        font-size: 15px;
+    }
+
+    #input-text,
+    #select-options {
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #fff;
+        color: #333;
+        width: 200px;
+    }
+
+    option:checked {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .output {
+        display: flex;
+        background-color: rgba(46, 47, 47, 0.5);
+        /* opacity: .7; */
+        width: 800px;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .banner {
+        background-color: rgba(72, 72, 71, 0.5);
+        color: white;
+        opacity: 1;
+        padding: 20px;
+        margin: 20px 20px;
+        border-radius: 3px;
+    }
+
+    #image img {
+        width: 400px;
+        margin: 30px;
+    }
+
+    #text {
+        color: white;
+        background-color: rgba(72, 72, 71, 0.5);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #text span {
+        margin: 30px;
+    }
+
+    #text span:last-child {
+        opacity: 1;
+        background-color: rgba(117, 116, 116, 0.5);
+        border-radius: 100%;
+        width: 100px;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        color: white;
+    }
+</style>
+
+<body>
+    <div class="main-container">
+        <h1 class="heading">Calculate a weight of an object on a planet</h1>
+
+        <div class="info">
+            <input type="number" id="input-text" placeholder="Mass in Kilogram">
+            <select id="select-options">
+                <option value="" selected>--Select planet--</option>
+            </select>
+            <button id="Calc">Calculate Weight</button>
+        </div>
+
+        <div class="output">
+            <div id="image">
+
+            </div>
+            <div id="text">
+
+            </div>
+            <div class="banner">Mass is Required</div>
+        </div>
+
+    </div>
+
+    <script>
+
+        let planets = [
+            { name: 'Mercury', gravity: 3.7 },
+            { name: 'Venus', gravity: 8.87 },
+            { name: 'Earth', gravity: 9.81 },
+            { name: 'Moon', gravity: 1.625 },
+            { name: 'Mars', gravity: 3.72076 },
+            { name: 'Jupiter', gravity: 24.79 },
+            { name: 'Saturn', gravity: 10.44 },
+            { name: 'Uranus', gravity: 8.69 },
+            { name: 'Neptune', gravity: 11.15 },
+            { name: 'Pluto', gravity: 0.62 }
+        ];
+
+        const select = document.getElementById('select-options')
+
+        planets.forEach(element => {
+            let option = document.createElement('option')
+            option.value = element.name
+            option.innerText = element.name
+
+            select.appendChild(option)
+        });
+
+        let img_link = 'https://raw.githubusercontent.com/Asabeneh/30-Days-Of-JavaScript/master/24_Day_Project_solar_system/24_day_starter/images/';
+
+        const mass_elem = document.getElementById('input-text')
+        const planet_elem = document.getElementById('select-options')
+        const calcbtn_elem = document.getElementById('Calc')
+        const banner_elem = document.getElementsByClassName('banner')[0]
+        const img_elem = document.getElementById('image')
+        const text_elem = document.getElementById('text')
+
+        let mass
+
+        calcbtn_elem.addEventListener('click', e => {
+            img_elem.innerHTML = ''
+            text_elem.innerHTML = ''
+            if (mass_elem.value != '') {
+                if (planet_elem.value != '') {
+                    banner_elem.style.display = 'none'
+
+                    let img = document.createElement('img')
+                    img.src = `${img_link}${planet_elem.value.toLowerCase()}.png`;
+
+                    img_elem.appendChild(img)
+
+                    let text = document.createElement('span')
+                    text.innerHTML = `The weight of the object on <b>${planet_elem.value}</b>`;
+
+                    text_elem.appendChild(text)
+
+                    let Weight
+
+                    planets.forEach(element => {
+                        if (planet_elem.value == element.name) {
+                            Weight = (mass_elem.value * element.gravity) / 9.81;
+                        }
+                    });
+
+                    let text_circle = document.createElement('span')
+                    text_circle.innerHTML = `${Weight.toFixed(2)} Kg`;
+
+                    text_elem.appendChild(text_circle)
+
+                } else {
+                    banner_elem.innerText = 'You did not choose a planet yet! '
+                }
+            }
+        })
+
+    </script>
+</body>
+
+</html>
