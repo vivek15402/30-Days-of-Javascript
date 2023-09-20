@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<style>
+    * {
+        font-family: system-ui;
+    }
+
+    body {
+        margin: auto;
+    }
+
+    .first-container,
+    .second-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 350px;
+        position: relative;
+    }
+
+    .back-image {
+        background-image: url('./globe-2.jpg');
+        background-size: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 350px;
+        z-index: -1;
+    }
+
+    .content {
+        display: flex;
+        position: relative;
+        text-align: center;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    .content h1 {
+        z-index: 1;
+        margin: auto;
+        color: #fff;
+    }
+
+    .content h4 {
+        z-index: 1;
+        margin: auto;
+        color: #fff;
+    }
+
+    .content h5 {
+        z-index: 1;
+        margin: auto;
+        color: #fff;
+    }
+
+    .back-image::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: -1;
+    }
+
+    div button {
+        background-color: #895be6;
+        color: #fff;
+        border: none;
+        font-weight: bold;
+        padding: 5px;
+        cursor: pointer;
+        border-radius: 3px;
+        margin-top: 5px;
+    }
+
+    #country-text {
+        width: 400px;
+        margin-top: 20px;
+        border: none;
+        padding: 10px;
+        border-radius: 20px;
+        box-shadow: 0px 0px 10px 1px #c9c9c9;
+    }
+
+    #country-text::placeholder {
+        text-align: center;
+        font-size: 18px;
+    }
+
+    .second-container {
+        background-color: #ffffe3;
+        margin: auto;
+    }
+
+    .block-container {
+        display: flex;
+        flex-wrap: wrap;
+        width: 700px;
+    }
+
+    .country {
+        background-image: url('./map_image.jpg');
+        width: 100px;
+        height: 100px;
+        background-size: 100px 100px;
+        margin: 20px;
+        position: relative;
+        display: flex;
+    }
+
+    .country::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 1;
+        border-radius: 5px;
+    }
+
+    .country span {
+        color: #fff;
+        font-weight: bold;
+        margin: auto;
+        text-align: center;
+        z-index: 2;
+        font-size: 13px;
+    }
+
+    #sort {
+        display: none;
+    }
+
+    #sort,
+    #rev-sort {
+        background-color: #591db8;
+    }
+    #country-text{
+        display: none;
+    }
+</style>
+
+<body>
+    <div class="main-container">
+        <div class="first-container">
+            <div class="back-image"></div>
+            <div class="content">
+                <h1 id="title">WORLD COUNTRIES LIST</h1>
+                <h4 class="subtitle">Total Number of countries: </h4>
+                <h5 class="subtitle2">Countries starts with V are 8</h5>
+                <div>
+                    <button id="one-word">STARTING WORD</button>
+                    <button id="any-word">SEARCH WITH ANY WORD</button>
+                    <button id="sort"><i class="fa fa-sort-alpha-asc"></i></button>
+                    <button id="rev-sort"><i class="fa fa-sort-alpha-desc"></i></button>
+                </div>
+                <input type="text" name="country-search" id="country-text" placeholder="Search Country...">
+            </div>
+        </div>
+        <div class="second-container">
+            <div class="block-container">
+
+            </div>
+        </div>
+    </div>
+
+
+    <script src="./countries.js"></script>
+    <script>
+
+        // console.log(countries)
+        
+
+        const block_div = document.getElementsByClassName('block-container')[0]
+        const sort_btn = document.getElementById('sort')
+        const rev_sort_btn = document.getElementById('rev-sort')
+        const search_input = document.getElementById('country-text')
+        const startswith_btn = document.getElementById('one-word')
+        const anyword_btn = document.getElementById('any-word')
+
+        function update_countries(updated_countries) {
+            updated_countries.forEach(element => {
+                let country_div = document.createElement('div')
+                country_div.className = 'country'
+
+                let country_name = document.createElement('span')
+                country_name.innerText = element
+
+                country_div.appendChild(country_name)
+
+                block_div.appendChild(country_div)
+            });
+        }
+
+        let final_array = [...countries.map(word => word.toUpperCase())]
+        update_countries(final_array)
+
+        startswith_btn.addEventListener('click', () => {
+            update_countries(final_array)
+            sort(final_array)
+            startswith_btn.style.cssText = 'background-color: #591db8;'
+            anyword_btn.style.cssText = 'background-color: #895be6;'
+            search_input.value = ''
+            search_input.style.display = 'inline-block'
+            search_input.addEventListener('input', () => {
+                block_div.innerHTML = ''
+                const filteredWords = final_array.filter(word => word.startsWith(search_input.value.toUpperCase()));
+                // console.log(filteredWords)
+                update_countries(filteredWords)
+                sort(filteredWords)
+            })
+        })
+
+        anyword_btn.addEventListener('click', () => {
+            update_countries(final_array)
+            sort(final_array)
+            anyword_btn.style.cssText = 'background-color: #591db8;'
+            startswith_btn.style.cssText = 'background-color: #895be6;'
+            search_input.value = ''
+            search_input.style.display = 'inline-block'
+            search_input.addEventListener('input', () => {
+                block_div.innerHTML = ''
+                const filteredWords = final_array.filter(word => word.includes(search_input.value.toUpperCase()));
+                // console.log(filteredWords)
+                update_countries(filteredWords)
+                sort(filteredWords)
+            })
+        })
+
+        function sort(final_array) {
+            sort_btn.addEventListener('click', () => {
+                block_div.innerHTML = ''
+                final_array = final_array.sort();
+
+                update_countries(final_array)
+                rev_sort_btn.style.display = 'inline-block'
+                sort_btn.style.display = 'none'
+            })
+
+            rev_sort_btn.addEventListener('click', () => {
+                block_div.innerHTML = ''
+                final_array = final_array.sort().reverse();
+
+                update_countries(final_array)
+                sort_btn.style.display = 'inline-block'
+                rev_sort_btn.style.cssText = 'display: none;'
+            })
+        }
+        sort(final_array)
+
+
+
+    </script>
+</body>
+
+</html>

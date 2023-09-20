@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        font-family: system-ui;
+    }
+
+    .title {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        background-color: #eff0f1;
+        margin-bottom: 20px;
+        box-shadow: 1px 2px 11px 0px #dbdbdb;
+    }
+
+    #title,
+    #title2 {
+        color: #f2a93b;
+        margin: auto;
+    }
+
+    #title2 {
+        color: rgb(91, 89, 89);
+    }
+
+    .middle-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    button {
+        background-color: #f2a93b;
+        border: none;
+        padding: 5px 10px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    #info {
+        margin: auto;
+        color: rgb(91, 89, 89);
+    }
+
+    .table-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #eff0f1;
+        box-shadow: 1px 2px 11px 0px #dbdbdb;
+    }
+
+    tr td {
+        padding-right: 20px;
+    }
+
+    .first-col img {
+        border: 1px solid rgb(209, 208, 208);
+    }
+
+    .second-col {
+        width: 25%;
+    }
+
+    .third-col {
+        width: 500px;
+    }
+
+    .third-col div {
+        height: 30px;
+        background-color: #f2a93b;
+        border-radius: 3px;
+    }
+    #language-table tbody{
+        display: none;
+    }
+    #language-table tbody tr td.third-col{
+        padding-top: 6px;
+    }
+</style>
+
+<body>
+    <div class="main-container">
+        <div class="title">
+            <h1 id="title">World Countries Data</h1>
+            <h4 id="title2">World </h4>
+        </div>
+        <div class="middle-container">
+            <div>
+                <button id="population" disabled>POPULATION</button>
+                <button id="language">LANGUAGES</button>
+            </div>
+            <h4 id="info">10 most populated countries in the world</h4>
+        </div>
+        <div class="table-container">
+            <table id="population-table">
+                <tbody>
+                </tbody>
+            </table>
+            <table id="language-table">
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+
+
+    <script src="./countries_data.js"></script>
+    <script>
+        const population_table_elem = document.querySelector('#population-table tbody')
+
+        const language_table_elem = document.querySelector('#language-table tbody')
+
+        const info_text = document.getElementById('info')
+
+        function population_table() {
+            const title2 = document.getElementById('title2')
+            title2.innerText = `Currently, we have ${countries_data.length} countries`;
+
+            countries_data.sort((a, b) => b.population - a.population)
+
+            const top10Countries = countries_data.slice(0, 10);
+
+            let total_population = 0
+
+            top10Countries.forEach(element => {
+                total_population += element.population
+            });
+
+            let top_country_population_Diff = 100 - ((top10Countries[0].population / total_population) * 100)
+
+            top10Countries.forEach((element, index) => {
+                let third_col
+                let row = document.createElement('tr')
+                let tdata = `
+                        <td class="first-col"><img src="${element.flag}" width="50px"></td>
+                        <td class="second-col">${element.name}</td>
+                        <td class="third-col"><div id="${index}"></div></td>
+                        <td class="fourth-col">${new Intl.NumberFormat('en-IN').format(element.population)}</td>
+                `;
+                row.innerHTML = tdata
+                population_table_elem.appendChild(row)
+
+                third_col = document.getElementById(`${index}`)
+
+                third_col.style.width = `${(element.population / total_population) * 100 + top_country_population_Diff}%`;
+            });
+        }
+
+        population_table()
+
+
+        function languages_table() {
+
+            let languages = []
+            countries_data.forEach(countries => {
+                countries.languages.forEach(language => {
+                    languages.push(language)
+                });
+            });
+
+            languages.sort();
+
+            // Create an empty object to store the counts
+            const counts = {};
+
+            // Iterate through the array and count occurrences
+            for (const language of languages) {
+                if (counts[language]) {
+                    counts[language]++;
+                } else {
+                    counts[language] = 1;
+                }
+            }
+
+            languages_array_final = Object.entries(counts).sort((a, b) => b[1] - a[1])
+
+            const formattedLanguageArray = languages_array_final.map(([language, count]) => ({
+                language,
+                count
+            }));
+
+            const top10Languages = formattedLanguageArray.slice(0, 10);
+
+            let total_of_languages = 0
+
+            top10Languages.forEach(element => {
+                total_of_languages += element.count
+            });
+            let top_language_Diff = 100 - ((top10Languages[0].count / total_of_languages) * 100)
+
+            top10Languages.forEach((element, index) => {
+                let third_col
+                let row = document.createElement('tr')
+                let tdata = `
+                        <td class="second-col">${element.language}</td>
+                        <td class="third-col"><div id="L${index}"></div></td>
+                        <td class="fourth-col">${element.count}</td>
+                `;
+                row.innerHTML = tdata
+                language_table_elem.appendChild(row)
+
+                third_col = document.getElementById(`L${index}`)
+
+                third_col.style.width = `${(element.count / total_of_languages) * 100 + top_language_Diff}%`;
+            });
+        }
+
+        languages_table()
+
+        const population_button = document.getElementById('population')
+        const language_button = document.getElementById('language')
+
+        population_button.addEventListener('click', () => {
+            language_button.removeAttribute('disabled');
+            population_button.setAttribute('disabled', 'disabled');
+
+            language_table_elem.style.display = 'none'
+            population_table_elem.style.display = 'block'
+
+            info_text.innerText = '10 most populated countries in the world.'
+        })
+
+        language_button.addEventListener('click', () => {
+            population_button.removeAttribute('disabled');
+            language_button.setAttribute('disabled', 'disabled');
+
+            population_table_elem.style.display = 'none'
+            language_table_elem.style.display = 'block'
+            info_text.innerText = '10 most spoken languages in the world.'
+        })
+
+    </script>
+</body>
+
+</html>
