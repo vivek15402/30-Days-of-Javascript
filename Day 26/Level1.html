@@ -154,6 +154,9 @@
     #country-text{
         display: none;
     }
+    #subtitle2 {
+        display: none;
+    }
 </style>
 
 <body>
@@ -162,8 +165,8 @@
             <div class="back-image"></div>
             <div class="content">
                 <h1 id="title">WORLD COUNTRIES LIST</h1>
-                <h4 class="subtitle">Total Number of countries: </h4>
-                <h5 class="subtitle2">Countries starts with V are 8</h5>
+                <h4 id="subtitle">Total Number of countries: </h4>
+                <h5 id="subtitle2">Countries starts with V are 8</h5>
                 <div>
                     <button id="one-word">STARTING WORD</button>
                     <button id="any-word">SEARCH WITH ANY WORD</button>
@@ -193,6 +196,10 @@
         const search_input = document.getElementById('country-text')
         const startswith_btn = document.getElementById('one-word')
         const anyword_btn = document.getElementById('any-word')
+        const subtitle_elem = document.getElementById('subtitle')
+        const subtitle2_elem = document.getElementById('subtitle2')
+
+        subtitle_elem.innerText = `Total Number of Countries are ${countries.length}`;
 
         function update_countries(updated_countries) {
             updated_countries.forEach(element => {
@@ -214,6 +221,7 @@
         startswith_btn.addEventListener('click', () => {
             update_countries(final_array)
             sort(final_array)
+            subtitle2_elem.innerHTML = ''
             startswith_btn.style.cssText = 'background-color: #591db8;'
             anyword_btn.style.cssText = 'background-color: #895be6;'
             search_input.value = ''
@@ -224,12 +232,16 @@
                 // console.log(filteredWords)
                 update_countries(filteredWords)
                 sort(filteredWords)
+
+                subtitle2_elem.style.display = 'inline-block'
+                subtitle2_elem.innerHTML = `Countries starts with <span style="color: orange;">${search_input.value}</span> are <span style="color: lightgreen;">${filteredWords.length}</span>`;
             })
         })
 
         anyword_btn.addEventListener('click', () => {
             update_countries(final_array)
             sort(final_array)
+            subtitle2_elem.innerHTML = ''
             anyword_btn.style.cssText = 'background-color: #591db8;'
             startswith_btn.style.cssText = 'background-color: #895be6;'
             search_input.value = ''
@@ -240,6 +252,10 @@
                 // console.log(filteredWords)
                 update_countries(filteredWords)
                 sort(filteredWords)
+
+                
+                subtitle2_elem.style.display = 'inline-block'
+                subtitle2_elem.innerHTML = `Countries containing <span style="color: orange;">${search_input.value}</span> are <span style="color: lightgreen;">${filteredWords.length}</span>`;
             })
         })
 
