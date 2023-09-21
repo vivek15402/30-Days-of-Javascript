@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        font-family: system-ui;
+    }
+
+    .main-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 700px;
+        margin: auto;
+    }
+
+    .title h1 {
+        font-size: 80px;
+        margin: auto;
+    }
+
+    .titles {
+        background-color: #eddfde;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .titles span {
+        animation: myAnim 1s ease-in 0s 1 normal forwards;
+    }
+
+    .cards {
+        display: flex;
+    }
+
+    .card {
+        width: 180px;
+        height: 150px;
+        box-shadow: 0px 0px 3px 0px #e6e6e6;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+        /* Allow cards to grow and take up equal space */
+        margin: 0 50px;
+        transition: background-color 0.3s ease-in, font-size 0.3s ease-in;
+    }
+
+    .card:hover {
+        background-color: #f3e9e2;
+        cursor: pointer;
+        font-size: 17px;
+    }
+
+    .topics {
+        margin-top: 10px;
+    }
+
+    .topics span {
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    @keyframes myAnim {
+        0% {
+            animation-timing-function: ease-in;
+            opacity: 0;
+            transform: translateX(-250px);
+        }
+
+        38% {
+            animation-timing-function: ease-out;
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        55% {
+            animation-timing-function: ease-in;
+            transform: translateX(-68px);
+        }
+
+        72% {
+            animation-timing-function: ease-out;
+            transform: translateX(0);
+        }
+
+        81% {
+            animation-timing-function: ease-in;
+            transform: translateX(-28px);
+        }
+
+        90% {
+            animation-timing-function: ease-out;
+            transform: translateX(0);
+        }
+
+        95% {
+            animation-timing-function: ease-in;
+            transform: translateX(-8px);
+        }
+
+        100% {
+            animation-timing-function: ease-out;
+            transform: translateX(0);
+        }
+    }
+</style>
+
+<body>
+    <div class="main-container">
+        <div class="title">
+            <h1>Vivek Saini</h1>
+        </div>
+        <div class="titles">
+
+        </div>
+        <div class="bio">
+            <p></p>
+        </div>
+        <div class="cards">
+            <div class="card">JAVASCRIPT FOR EVERYONE</div>
+            <div class="card">30DAYS OF PYTHON</div>
+            <div class="card">30DAYS OF JAVASCRIPT</div>
+        </div>
+        <div class="topics">The technologies I teach <span>PYTHON</span></div>
+    </div>
+
+    <script src="./challenges_info.js"></script>
+    <script>
+
+        const titles_elem = document.getElementsByClassName('titles')[0]
+        const topics_span_elem = document.querySelector('.topics span')
+        const authorTitles = asabenehChallenges2020.author.titles;
+
+        let index = 0;
+
+        function appendNextTitle() {
+            if (index < authorTitles.length) {
+                titles_elem.innerText = '';
+                let span = document.createElement('span');
+                span.innerText = `${authorTitles[index][0]} ${authorTitles[index][1]}`;
+                titles_elem.appendChild(span);
+                index++;
+                if (index > 4) {
+                    index = 0
+                }
+                setTimeout(appendNextTitle, 2000);
+            }
+        }
+
+        appendNextTitle();
+
+        let bio_p_elem = document.querySelector('.bio p')
+
+        bio_p_elem.innerHTML = asabenehChallenges2020.author.bio
+
+        const topics_index_array = asabenehChallenges2020.challenges[0].topics;
+        let topics_index = 0;
+        console.log(topics_index_array)
+        const colorHexArray = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#33FFFF', '#FF33FF', '#333333'];
+
+        function appendNextTopics() {
+            if (topics_index < topics_index_array.length) {
+                topics_span_elem.innerText = `${topics_index_array[topics_index]}`;
+                topics_span_elem.style.color = colorHexArray[topics_index]
+                topics_index++;
+                if (topics_index > 6) {
+                    topics_index = 0
+                }
+                setTimeout(appendNextTopics, 2000);
+            }
+        }
+
+        appendNextTopics();
+
+    </script>
+</body>
+
+</html>
