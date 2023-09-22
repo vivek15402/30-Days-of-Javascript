@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<style>
+    * {
+        font-family: system-ui;
+    }
+
+    body {
+        margin: auto;
+    }
+
+    .main_container {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .input {
+        display: flex;
+        flex: 1;
+    }
+
+    .input * {
+        flex: 1;
+        margin: 0 5px;
+        padding: 7px;
+        border: 1px solid #e5c9c5;
+        border-radius: 2px;
+        width: 130px;
+    }
+
+    input::placeholder {
+        color: #c5c2c2;
+    }
+
+    input:focus {
+        outline: none;
+        border: 1px solid #e6968a;
+    }
+
+    #add_player_btn {
+        background-color: #e5c9c5;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .input_msg h4 {
+        color: #ec3423;
+        margin: 10px 0 0 0;
+    }
+
+    .players {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .card {
+        background-color: #e5c9c5;
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        padding: 5px;
+        width: 730px;
+    }
+
+    .card>span,
+    .card div {
+        flex: 1;
+    }
+
+    .utility_buttons {
+        display: flex;
+    }
+
+    .utility_buttons span {
+        display: flex;
+        background-color: #ffffff;
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+        justify-content: center;
+        align-items: center;
+        margin-right: 5px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .fa-trash {
+        color: #ec3423;
+    }
+
+    #firstname_span {
+        letter-spacing: 3px;
+    }
+
+    #date_added {
+        font-size: 12px;
+        letter-spacing: 0;
+        color: #a99da4;
+    }
+
+    .input_msg {
+        display: none;
+    }
+</style>
+
+<body>
+    <div class="main_container">
+        <div class="title">
+            <h1>30 Days of JavaScript Challenge Leaderboard</h1>
+        </div>
+        <div class="input">
+            <input type="text" name="firstname" id="firstname" placeholder="First Name">
+            <input type="text" name="lastname" id="lastname" placeholder="Last Name">
+            <input type="text" name="country" id="country" placeholder="Country">
+            <input type="number" name="score" id="score" placeholder="Player Score">
+            <button id="add_player_btn">Add Player</button>
+        </div>
+        <div class="input_msg">
+            <h4>All fields are required</h4>
+        </div>
+        <div class="players">
+            <!-- <div class="card">
+                <span id="firstname_span">Vivek Saini<br><span id="date_added">JAN 30, 2020 01:09</span></span>
+                <span> INDIA</span>
+                <span> 90</span>
+                <div class="utility_buttons">
+                    <span><i class="fa fa-trash" aria-hidden="true"></i></span>
+                    <span>+5</span>
+                    <span>-5</span>
+                </div>
+            </div> -->
+        </div>
+    </div>
+
+    <script>
+
+        function formatDate(date) {
+            // Month names array
+            const monthNames = [
+                "JAN", "FEB", "MAR", "APR",
+                "MAY", "JUN", "JUL", "AUG",
+                "SEP", "OCT", "NOV", "DEC"
+            ];
+
+            // Get date components
+            const day = date.getDate();
+            const month = monthNames[date.getMonth()];
+            const year = date.getFullYear();
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const ampm = date.getHours() >= 12 ? 'PM' : 'AM';
+            // Create the formatted string
+            const formattedDate = `${month} ${day}, ${year} ${hours}:${minutes} ${ampm}`;
+
+            return formattedDate;
+        }
+
+        // Example usage:
+        const now = new Date(); // Current date and time
+        const formattedDateTime = formatDate(now);
+
+        const add_player_btn_elem = document.getElementById('add_player_btn')
+        const firstname_elem = document.getElementById('firstname')
+        const lastname_elem = document.getElementById('lastname')
+        const country_elem = document.getElementById('country')
+        const score_elem = document.getElementById('score')
+        const input_msg_elem = document.getElementsByClassName('input_msg')[0]
+        const players_elem = document.getElementsByClassName('players')[0]
+
+        let players_array = [
+            { firstname: 'Sumit', lastname: 'Rohilla', country: 'INDIA', score: 98 , record_added: 'SEP 22, 2023 03:32 AM'},
+            { firstname: 'Vivek', lastname: 'Saini', country: 'INDIA', score: 90 , record_added: 'SEP 22, 2023 03:55 AM'}
+        ];
+
+        function add_array_elements() {
+            players_elem.innerHTML = ''
+            players_array.forEach((element, index) => {
+                let player_div = document.createElement('div')
+                player_div.className = 'card'
+                player_div.innerHTML =
+                    `<span id="firstname_span">${element.firstname} ${element.lastname}<br><span id="date_added">${element.record_added}</span></span>
+                            <span>${element.country}</span>
+                            <span>${element.score}</span>
+                            <div class="utility_buttons">
+                                <span id="del_${index}"><i class="fa fa-trash" aria-hidden="true"></i></span>
+                                <span id="+5_${index}">+5</span>
+                                <span id="-5_${index}">-5</span>
+                            </div>`;
+                players_elem.appendChild(player_div)
+
+            });
+            del_players()
+        }
+        add_array_elements()
+
+        function add_players() {
+            input_msg_elem.style.display = 'none'
+
+            const dataObject = {
+                "firstname": firstname_elem.value,
+                "lastname": lastname_elem.value,
+                "country": country_elem.value,
+                "score": parseFloat(score_elem.value),
+                "record_added": formattedDateTime
+            };
+            players_array.push(dataObject)
+
+            add_array_elements()
+        }
+
+        add_player_btn_elem.addEventListener('click', () => {
+            if (firstname_elem.value == '' || lastname_elem.value == '' || country_elem.value == '' || score_elem.value == '') {
+                input_msg_elem.style.display = 'inline-block'
+            } else {
+                add_players()
+            }
+        })
+
+        function del_players() {
+            players_array.forEach((element, index) => {
+
+                let del_player = document.getElementById(`del_${index}`)
+                let increase_score = document.getElementById(`+5_${index}`)
+                let decrease_score = document.getElementById(`-5_${index}`)
+
+                del_player.addEventListener('click', () => {
+                    console.log('del')
+                    players_array.splice(index, 1)
+                    add_array_elements()
+                })
+
+                increase_score.addEventListener('click', () => {
+                    players_array[index].score += 5
+                    add_array_elements()
+                })
+
+                decrease_score.addEventListener('click', () => {
+                    players_array[index].score -= 5
+                    add_array_elements()
+                })
+            })
+        }
+
+    </script>
+</body>
+
+</html>
