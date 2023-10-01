@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        font-family: system-ui;
+    }
+    body {
+        margin: auto;
+    }
+    .container {
+        font-size: 80px;
+        letter-spacing: 10px;
+        font-weight: bold;
+        
+    }
+    .container span {
+        animation: myAnim 2s ease 0s 1 normal forwards;
+    }
+
+    @keyframes myAnim {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+</style>
+
+<body>
+    <div class="container">
+
+    </div>
+
+    <script>
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        let text = '30 DAYS OF JAVASCRIPT CHALLENGE 2023 VIVEK SAINI';
+
+        const container = document.querySelector('.container')
+
+        function refresh() {
+            container.innerHTML = ''
+            for (let i = 0; i < text.length; i++) {
+                let span = document.createElement('span')
+                span.innerText = text[i]
+                span.style.color = getRandomColor()
+                const character = text[i];
+                container.appendChild(span)
+                container.style.background = getRandomColor()
+                // console.log(character);
+            }
+        }
+
+        setInterval(refresh, 2000);
+
+
+    </script>
+</body>
+
+</html>

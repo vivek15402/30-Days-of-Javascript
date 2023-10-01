@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        font-family: system-ui;
+    }
+
+    body {
+        margin: auto;
+    }
+
+    .container {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .container form {
+        display: flex;
+        flex-direction: column;
+        width: 500px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input {
+        height: 30px;
+        margin: 5px 0;
+        border: 2px solid #cdcdcd;
+        border-radius: 3px;
+        padding-left: 10px;
+        font-size: 15px;
+        color: #000;
+        font-weight: bold;
+        outline: none;
+    }
+
+    span {
+        color: #ffa500;
+        font-weight: bold;
+        text-align: center;
+        font-size: 13px;
+        padding: 0 40px
+    }
+
+    #submit {
+        width: 120px;
+        height: 40px;
+        background-color: #444444;
+        color: #fff;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        /* font-size: 20px; */
+    }
+    .span_msg {
+        display: none;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <h1 id="title">Validating Web Forms</h1>
+        <form action="">
+            <label for="firstname">First Name</label>
+            <input type="text" id="firstname" name="firstname">
+            <span id="firstname_msg">First name must be alphanumeric and contain 3 - 16 characters</span>
+
+            <label for="lastname">Last Name</label>
+            <input type="text" id="lastname" name="lastname">
+            <span id="lastname_msg">Last name must alphanumeric and contain 3 - 16 characters</span>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email">
+            <span id="email_msg">Email must be a valid address. e.g. example@example.com</span>
+
+            <label for="password">Password</label>
+            <input type="text" id="password" name="password">
+            <span id="password_msg">Password must be alphanumeric (@, _ and - are also allowed) and between 6 - 20
+                characters</span>
+
+            <label for="telephone">Telephone</label>
+            <input type="text" id="telephone" name="telephone">
+            <span id="telephone_msg">A valid Telephone (10 digits and 98123-45334)</span>
+
+            <label for="yourbio">Your Bio</label>
+            <input type="text" id="yourbio" name="yourbio">
+            <span id="yourbio_msg">Bio must contain only lowercase letters. underscores, hyphens and be 8 - 100
+                characters</span>
+
+            <input type="submit" value="Submit" id="submit">
+        </form>
+    </div>
+
+    <script>
+
+        const firstname_input_elem = document.getElementById('firstname')
+        const lastname_input_elem = document.getElementById('lastname')
+        const email_input_elem = document.getElementById('email')
+        const password_input_elem = document.getElementById('password')
+        const telephone_input_elem = document.getElementById('telephone')
+        const yourbio_input_elem = document.getElementById('yourbio')
+        const submit_elem = document.getElementById('submit')
+
+        const firstname_msg_input_elem = document.getElementById('firstname_msg')
+        const lastname_msg_input_elem = document.getElementById('lastname_msg')
+        const email_msg_input_elem = document.getElementById('email_msg')
+        const password_msg_input_elem = document.getElementById('password_msg')
+        const telephone_msg_input_elem = document.getElementById('telephone_msg')
+        const yourbio_msg_input_elem = document.getElementById('yourbio_msg')
+        let msg_elements
+        function CheckForm(element, element_msg, pattern_str) {
+            element.addEventListener('input', () => {
+                let value = element.value;
+                const pattern = pattern_str
+                const result = pattern.test(value)
+
+                if (!result){
+                    element.style.border = '2px solid #fd695e'
+                    element_msg.classList.remove('span_msg')
+                } else {
+                    element.style.border = '2px solid #31c37d'
+                    element_msg.classList.add('span_msg')
+                }
+                let all_inputs = document.querySelectorAll('.span_msg')
+                let status = 0
+                all_inputs.forEach(element => {
+                    status++
+                });
+                if (status == 6) {
+                    submit_elem.style.background = '#21bf73'
+                } else {
+                    submit_elem.style.background = '#444444';
+                }
+            }) 
+        }
+
+        CheckForm(firstname_input_elem, firstname_msg_input_elem, /^[a-zA-Z0-9]{3,16}$/)
+        CheckForm(lastname_input_elem, lastname_msg_input_elem, /^[a-zA-Z0-9]{3,16}$/)
+        CheckForm(email_input_elem, email_msg_input_elem, /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+        CheckForm(password_input_elem, password_msg_input_elem, /^[a-zA-Z0-9@_-]{6,20}$/)
+        CheckForm(telephone_input_elem, telephone_msg_input_elem, /^(?:\d{10}|\d{5}-\d{5})$/)
+        CheckForm(yourbio_input_elem, yourbio_msg_input_elem, /^[a-z_ -]{8,100}$/)
+        
+    </script>
+</body>
+
+</html>

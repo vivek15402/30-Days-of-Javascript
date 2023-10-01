@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<style>
+    * {
+        font-family: system-ui;
+    }
+
+    body {
+        margin: auto;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #eeeaf0;
+        width: 100%;
+    }
+
+    .title h1 {
+        margin: auto;
+        color: #f2a93b;
+    }
+
+    .utilities {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #search_msg {
+        color: #f2a93b;
+        display: none;
+    }
+
+    #countries_search {
+        width: 550px;
+        margin-top: 20px;
+        border: none;
+        padding: 10px;
+        border-radius: 20px;
+        box-shadow: 0px 0px 10px 1px #c9c9c9;
+        outline: none;
+        color: #f2a93b;
+        font-weight: bold;
+        font-size: 15px;
+        text-align: center;
+    }
+
+    #countries_search::placeholder {
+        text-align: center;
+        font-size: 14px;
+        font-weight: normal;
+    }
+
+    .buttons {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+    .buttons span {
+        background-color: #f2a93b;
+        padding: 7px 15px;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+    #sort_btn {
+        background-color: #fff;
+        color: #f2a93b;
+        font-size: 35px;
+        padding: 0;
+    }
+
+    .countries {
+        display: flex;
+        justify-content: center;
+        background-color: #f1f0f0;
+        width: 100%;
+        max-width: 1200px;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .country {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        background-color: #fff;
+        margin: 5px;
+        width: 150px;
+    }
+
+    .country div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .country img {
+        width: 80px;
+        border-radius: 3px;
+        border: 1px solid #c9c9c9;
+    }
+
+    .country span {
+        font-size: 13px;
+        text-align: left;
+    }
+
+    .country .name {
+        color: #f2a93b;
+        font-weight: bold;
+        padding: 10px;
+        text-align: center;
+    }
+
+    hr {
+        border: 1px dashed rgb(170, 170, 170);
+        border-radius: 5px;
+        width: 100%;
+        margin: auto;
+    }
+
+    #capital_btn i,
+    #population_btn i {
+        display: none;
+    }
+
+    /* .countries {
+        display: none;
+    } */
+    .main-container {
+        margin-top: 10px;
+    }
+
+    .middle-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    button {
+        background-color: #f2a93b;
+        border: none;
+        padding: 5px 10px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    #info {
+        margin: auto;
+        color: rgb(91, 89, 89);
+    }
+
+    .table-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #eff0f1;
+        box-shadow: 1px 2px 11px 0px #dbdbdb;
+    }
+
+    tr td {
+        padding-right: 20px;
+    }
+
+    .first-col img {
+        border: 1px solid rgb(209, 208, 208);
+    }
+
+    .second-col {
+        width: 25%;
+    }
+
+    .third-col {
+        width: 500px;
+    }
+
+    .third-col div {
+        height: 30px;
+        background-color: #f2a93b;
+        border-radius: 3px;
+    }
+
+    #language-table tbody {
+        display: none;
+    }
+
+    #language-table tbody tr td.third-col {
+        padding-top: 6px;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="title">
+            <h1>World Countries Data</h1>
+            <span id="countries_no">Currently, We have 190 Countries</span>
+            <span id="search_msg">5 countries satisfied the search criteria</span>
+        </div>
+        <div class="utilities">
+            <input type="text" name="countries" id="countries_search"
+                placeholder="Search countries by name, capital and languages">
+            <div class="buttons">
+                <span id="name_btn">Name <i class="fa fa-sort-alpha-desc"></i></span>
+                <span id="capital_btn">Capital <i class="fa fa-sort-alpha-desc"></i></span>
+                <span id="population_btn">Population <i class="fa fa-sort-numeric-desc"></i></span>
+                <span id="chart_btn"><i class="fa fa-bar-chart"></i></span>
+            </div>
+        </div>
+        <div class="countries">
+            <!-- <div class="country">
+                <div>
+                    <img src="https://flagcdn.com/in.svg" alt="">
+                    <span class="name">INDIA</span>
+                </div>
+                <span class="capital">Capital: Delhi</span>
+                <hr>
+                <span class="language">Language: Hindi, English</span>
+                <hr>
+                <span class="population">Population: 1,38,00,04,385</span>
+            </div> -->
+        </div>
+        <div class="main-container">
+            <div class="middle-container">
+                <div>
+                    <button id="population" disabled>POPULATION</button>
+                    <button id="language">LANGUAGES</button>
+                </div>
+                <h4 id="info">10 most populated countries in the world</h4>
+            </div>
+            <div class="table-container">
+                <table id="population-table">
+                    <tbody>
+                    </tbody>
+                </table>
+                <table id="language-table">
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="./countries_data.js"></script>
+    <script>
+
+        // console.log(countries_data[8])
+
+        const countries_no_elem = document.getElementById('countries_no')
+        const search_msg_elem = document.getElementById('search_msg')
+        const countries_div_elem = document.getElementsByClassName('countries')[0]
+        const countries_search_elem = document.getElementById('countries_search')
+        const name_btn_elem = document.getElementById('name_btn')
+        const capital_btn_elem = document.getElementById('capital_btn')
+        const population_btn_elem = document.getElementById('population_btn')
+        const chart_btn_elem = document.getElementById('chart_btn')
+
+        let final_array = countries_data.map(country => ({
+            ...country,
+            name: country.name.toUpperCase()
+        }));
+
+        countries_no_elem.innerText = `Currently, We have ${countries_data.length} Countries`;
+
+        function populate_countries(countries_list) {
+            countries_div_elem.innerHTML = ''
+            countries_list.forEach(element => {
+                let country_div = document.createElement('div')
+                country_div.className = 'country'
+                country_div.innerHTML = `
+                    <div>
+                        <img src="${element.flag}" alt="">
+                        <span class="name">${element.name}</span>
+                    </div>
+                    <span class="capital">Capital: ${element.capital}</span>
+                    <span class="language">Language: ${element.languages.join(", ")}</span>
+                    <span class="population">Population: ${new Intl.NumberFormat('en-IN').format(element.population)}</span>
+                `;
+                countries_div_elem.appendChild(country_div)
+            });
+        }
+        populate_countries(final_array)
+        sort(final_array)
+        population_table(final_array)
+        languages_table(final_array)
+
+        countries_search_elem.addEventListener('input', () => {
+            countries_search_elem.value = countries_search_elem.value.toUpperCase();
+            let searchValue = countries_search_elem.value.toLowerCase()
+
+            // console.log(searchValue)
+            const countries_array = final_array.filter(country =>
+                country.name.toLowerCase().includes(searchValue) ||
+                country.capital.toLowerCase().includes(searchValue) ||
+                country.languages.some(lang => lang.toLowerCase().includes(searchValue))
+            );
+            // console.log(countries_array)
+            if (searchValue.length > 0) {
+                search_msg_elem.style.display = 'inline-block'
+                search_msg_elem.innerText = `${countries_array.length} countries satisfied the search criteria`;
+            } else {
+                search_msg_elem.style.display = 'none'
+            }
+            populate_countries(countries_array)
+            sort(countries_array)
+            population_table(countries_array)
+            languages_table(countries_array)
+
+
+            // subtitle2_elem.style.display = 'inline-block'
+            // subtitle2_elem.innerHTML = `Countries containing <span style="color: orange;">${search_input.value}</span> are <span style="color: lightgreen;">${filteredWords.length}</span>`;
+        })
+
+        const name_btn_i_elem = document.querySelector('#name_btn i')
+        const capital_btn_i_elem = document.querySelector('#capital_btn i')
+        const population_btn_i_elem = document.querySelector('#population_btn i')
+
+
+        function sort(final_array) {
+            let sort_order_name = 1
+            name_btn_elem.addEventListener('click', () => {
+
+                sort_order_name % 2 == 0 ?
+                    final_array = final_array.sort((a, b) => a.name.localeCompare(b.name)) : final_array = final_array.sort((a, b) => b.name.localeCompare(a.name))
+
+                // console.log(final_array)
+                populate_countries(final_array)
+
+                name_btn_i_elem.style.display = 'inline-block'
+                capital_btn_i_elem.style.display = 'none'
+                population_btn_i_elem.style.display = 'none'
+                name_btn_i_elem.classList.toggle('fa-sort-alpha-asc')
+                name_btn_i_elem.classList.toggle('fa-sort-alpha-desc')
+                sort_order_name++
+            })
+
+            let sort_order = 1
+            capital_btn_elem.addEventListener('click', () => {
+
+                sort_order % 2 == 0 ?
+                    final_array = final_array.sort((a, b) => a.capital.localeCompare(b.capital)) : final_array = final_array.sort((a, b) => b.capital.localeCompare(a.capital))
+
+                // console.log(final_array)
+                populate_countries(final_array)
+
+                capital_btn_i_elem.style.display = 'inline-block'
+                name_btn_i_elem.style.display = 'none'
+                population_btn_i_elem.style.display = 'none'
+                capital_btn_i_elem.classList.toggle('fa-sort-alpha-asc')
+                capital_btn_i_elem.classList.toggle('fa-sort-alpha-desc')
+                sort_order++
+            })
+
+            let sort_order_pop = 1
+            population_btn_elem.addEventListener('click', () => {
+                sort_order_pop % 2 == 0 ?
+                    final_array = final_array.sort((a, b) => b.population - a.population) : final_array = final_array.sort((a, b) => a.population - b.population)
+                // console.log(final_array)
+                populate_countries(final_array)
+
+                population_btn_i_elem.style.display = 'inline-block'
+                capital_btn_i_elem.style.display = 'none'
+                name_btn_i_elem.style.display = 'none'
+                population_btn_i_elem.classList.toggle('fa-sort-numeric-asc')
+                population_btn_i_elem.classList.toggle('fa-sort-numeric-desc')
+                sort_order_pop++
+            })
+
+        }
+
+
+
+        function population_table(countries_data) {
+
+            const population_table_elem = document.querySelector('#population-table tbody')
+            population_table_elem.innerHTML = ``;
+            
+
+            const info_text = document.getElementById('info')
+            countries_data.sort((a, b) => b.population - a.population)
+
+            const top10Countries = countries_data.slice(0, 10);
+
+            let total_population = 0
+
+            top10Countries.forEach(element => {
+                total_population += element.population
+            });
+
+            let top_country_population_Diff = 100 - ((top10Countries[0].population / total_population) * 100)
+
+            top10Countries.forEach((element, index) => {
+                let third_col
+                let row = document.createElement('tr')
+                let tdata = `
+                        <td class="first-col"><img src="${element.flag}" width="50px"></td>
+                        <td class="second-col">${element.name}</td>
+                        <td class="third-col"><div id="${index}"></div></td>
+                        <td class="fourth-col">${new Intl.NumberFormat('en-IN').format(element.population)}</td>
+                `;
+                row.innerHTML = tdata
+                population_table_elem.appendChild(row)
+
+                third_col = document.getElementById(`${index}`)
+
+                third_col.style.width = `${(element.population / total_population) * 100 + top_country_population_Diff}%`;
+            });
+        }
+
+
+        function languages_table(countries_data) {
+            const language_table_elem = document.querySelector('#language-table tbody')
+            language_table_elem.innerHTML = ``;
+
+            let languages = []
+            countries_data.forEach(countries => {
+                countries.languages.forEach(language => {
+                    languages.push(language)
+                });
+            });
+
+            languages.sort();
+
+            // Create an empty object to store the counts
+            const counts = {};
+
+            // Iterate through the array and count occurrences
+            for (const language of languages) {
+                if (counts[language]) {
+                    counts[language]++;
+                } else {
+                    counts[language] = 1;
+                }
+            }
+
+            languages_array_final = Object.entries(counts).sort((a, b) => b[1] - a[1])
+
+            const formattedLanguageArray = languages_array_final.map(([language, count]) => ({
+                language,
+                count
+            }));
+
+            const top10Languages = formattedLanguageArray.slice(0, 10);
+
+            let total_of_languages = 0
+
+            top10Languages.forEach(element => {
+                total_of_languages += element.count
+            });
+            let top_language_Diff = 100 - ((top10Languages[0].count / total_of_languages) * 100)
+
+            top10Languages.forEach((element, index) => {
+                let third_col
+                let row = document.createElement('tr')
+                let tdata = `
+                        <td class="second-col">${element.language}</td>
+                        <td class="third-col"><div id="L${index}"></div></td>
+                        <td class="fourth-col">${element.count}</td>
+                `;
+                row.innerHTML = tdata
+                language_table_elem.appendChild(row)
+
+                third_col = document.getElementById(`L${index}`)
+
+                third_col.style.width = `${(element.count / total_of_languages) * 100 + top_language_Diff}%`;
+            });
+        }
+
+        const population_table_elem = document.querySelector('#population-table tbody')
+
+        const language_table_elem = document.querySelector('#language-table tbody')
+
+        const info_text = document.getElementById('info')
+
+        const population_button = document.getElementById('population')
+        const language_button = document.getElementById('language')
+
+        population_button.addEventListener('click', () => {
+            language_button.removeAttribute('disabled');
+            population_button.setAttribute('disabled', 'disabled');
+
+            language_table_elem.style.display = 'none'
+            population_table_elem.style.display = 'block'
+
+            info_text.innerText = '10 most populated countries in the world.'
+        })
+
+        language_button.addEventListener('click', () => {
+            population_button.removeAttribute('disabled');
+            language_button.setAttribute('disabled', 'disabled');
+
+            population_table_elem.style.display = 'none'
+            language_table_elem.style.display = 'block'
+            info_text.innerText = '10 most spoken languages in the world.'
+        })
+
+    </script>
+</body>
+
+</html>
